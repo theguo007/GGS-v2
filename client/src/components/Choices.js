@@ -10,7 +10,7 @@ function Choices(props) {
                 <button className={"btn " + ((props.selection === "Shoot" || props.selection === "Bomb") ? "btn-success" : "btn-primary")}onClick={props.shoot} 
                         disabled={props.bullets === 0 || props.selectionMade}>
                     {props.bullets < 5 ? "Shoot" : "Bomb"}
-                </button>            
+                </button>
             </div>
             {props.waiting && <p id="Choices-WaitingText">Waiting for opponent...</p>}
         </div>

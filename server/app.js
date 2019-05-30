@@ -34,6 +34,11 @@ io.on("connection", socket => {
         socket.to(gameId).emit("Move", Move);
     });
 
+    socket.on("Replay", Move => {
+        var gameId = Object.keys(socket.rooms).filter(item => item!=socket.id)[0];
+        socket.to(gameId).emit("Replay");
+    });
+
     socket.on("lol", () => {
         console.log("Lol")
     })

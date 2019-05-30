@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import PlayerDisplay from "./PlayerDisplay"
 import Choices from "./Choices"
+import GameOverChoices from "./GameOverChoices"
 
 function PrintGameState(state, beforeMessage){
     console.log(`${beforeMessage} \n
@@ -19,8 +20,19 @@ function GunGunShoot(props) {
         turnNumber: 1
     })
     const [waiting, setWaiting] = useState(false)
+    const [replayHandshake, setReplayHandshake] = useState({
+        replay: false,
+        oppReplay: false
+    })
+    const [gameStats, setGameStats] = useState({
+        wins: 0,
+        oppWins: 0,
+    })
 
     useEffect(() =>{
+        if(gameState.winner){
+            reset()
+        }
         if (gameState.opponentMoves.length === gameState.turnNumber && gameState.moves.length === gameState.turnNumber){
             evaluateTurn()
         }
@@ -37,6 +49,12 @@ function GunGunShoot(props) {
                     ...prevGameState,
                     opponentMoves: [...prevGameState.opponentMoves, move]
                 }
+            })
+        })
+        props.socket.on("Replay", () => {
+            console.log("received replay. ")
+            setReplayHandshake(prevReplayHandshake => {
+                return {...prevReplayHandshake, oppReplay: true}
             })
         })
     }
@@ -72,9 +90,11 @@ function GunGunShoot(props) {
                     default:
                 }
                 if(((oppMove === "Shoot" || oppMove === "Bomb" ) && myMove === "Reload") || (oppMove === "Bomb" && myMove === "Block")){
+                    processStats()
                     newGameState.winner = "Opponent"
                 }
                 if(((myMove === "Shoot" || myMove === "Bomb" ) && oppMove === "Reload") || (myMove === "Bomb" && oppMove === "Block")){
+                    processStats()
                     newGameState.winner = "You"
                 }
                 setWaiting(false)
@@ -84,7 +104,20 @@ function GunGunShoot(props) {
         })
     }
 
-    function shoot(){        
+    function processStats() {
+        setGameStats(prevGameStats => {
+            const gameStats = {...prevGameStats}
+            if(gameState.moves[gameState.moves.length - 1] === "Shoot" || gameState.moves[gameState.moves.length - 1] === "Bomb"){
+                gameStats.wins++
+            } else {
+                gameStats.oppWins++
+            }
+            return gameStats
+        })
+        
+    }
+
+    function shoot(){
         setGameState(prevGameState => {
             if(prevGameState.bullets >= 5){
                 var moves = prevGameState.moves.slice()
@@ -134,9 +167,36 @@ function GunGunShoot(props) {
         setWaiting(true)
     }
 
+    function replay(){
+        setWaiting(true)
+        setReplayHandshake({...replayHandshake, replay: true})
+        props.socket.emit("Replay")
+    }
+
+    function reset(){
+        if(replayHandshake.replay && replayHandshake.oppReplay){
+            setReplayHandshake(prevHandshake => {
+                setWaiting(false)
+                setGameState({
+                    winner: null,
+                    moves: [],
+                    opponentMoves: [],
+                    bullets: 0,
+                    opponentBullets: 0,
+                    turnNumber: 1
+                })
+                return {
+                    replay: false,
+                    oppReplay: false
+                }
+            })
+        }
+    }
+
     return (
         <div>
             <p className="text-center name-banner">Gun Gun Shoot!</p>
+            <h3 className="score-banner text-center">{gameStats.wins} - {gameStats.oppWins}</h3>
             <div className="row">
                 <div className={"col-5 offset-1 player-display " + (gameState.winner === "You" ? "winner-display" : "")}>
                     <PlayerDisplay side="You" 
@@ -151,14 +211,15 @@ function GunGunShoot(props) {
                                     lastMove={gameState.turnNumber > 1 && gameState.opponentMoves[gameState.turnNumber - 2]}/>
                 </div>
             </div>
-            <Choices selection={gameState.moves[gameState.turnNumber - 1]}
+            {gameState.winner === null && <Choices selection={gameState.moves[gameState.turnNumber - 1]}
                     selectionMade= {gameState.moves.length === gameState.turnNumber}
                     reload={reload}
                     block={block}
                     shoot={shoot}
                     bullets={gameState.bullets}
                     waiting={waiting}
-                    turnNumber={gameState.turnNumber}/>
+                    turnNumber={gameState.turnNumber}/>}
+            { gameState.winner !== null && <GameOverChoices replay={replay}/>}
         </div>
     )
 }
