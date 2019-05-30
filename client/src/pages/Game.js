@@ -3,7 +3,7 @@ import socketIOClient from "socket.io-client"
 import uuidValidate from "uuid-validate"
 import Constants from "../Constants"
 import Waiting from "../components/Waiting"
-import GunGunShoot from "../components/GunGunShoot"
+import JamesBond from "../components/JamesBond"
 import Error from "../components/ErrorLink"
 
 let socket = null;
@@ -42,7 +42,7 @@ function Game(props) {
     return (
         <div>
             {gameStage === "Waiting" && <Waiting/>}
-            {gameStage === "Begin" && <GunGunShoot socket={socket}/>}
+            {gameStage === "Begin" && <JamesBond socket={socket}/>}
             {gameStage === "FullGame" && <Error error={Constants.FullGame}/>}
             {!isValidId && <Error error={Constants.InvalidId}/>}
         </div>

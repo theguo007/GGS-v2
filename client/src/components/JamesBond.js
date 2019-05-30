@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react'
 import PlayerDisplay from "./PlayerDisplay"
 import Choices from "./Choices"
 import GameOverChoices from "./GameOverChoices"
+import Modal from '../shared/Modal';
+import Stats from './Stats';
+import Rules from './Rules';
 
 function PrintGameState(state, beforeMessage){
     console.log(`${beforeMessage} \n
@@ -10,7 +13,8 @@ function PrintGameState(state, beforeMessage){
                 Turn Number ${state.turnNumber}`)
 }
 
-function GunGunShoot(props) {
+function JamesBond(props) {
+    // States
     const [gameState, setGameState] = useState({
         winner: null,
         moves: [],
@@ -28,7 +32,10 @@ function GunGunShoot(props) {
         wins: 0,
         oppWins: 0,
     })
+    const [showStatsModal, setShowStatsModal] = useState(false)
+    const [showRulesModal, setShowRulesModal] = useState(false)
 
+    // UseEffects
     useEffect(() =>{
         if(gameState.winner){
             reset()
@@ -42,6 +49,7 @@ function GunGunShoot(props) {
         setupSocket()
     }, [])
 
+    // Socket Setup
     function setupSocket() {
         props.socket.on("Move", move => {
             setGameState(prevGameState => {
@@ -59,6 +67,7 @@ function GunGunShoot(props) {
         })
     }
 
+    // Evaluations
     function evaluateTurn() {
         setGameState(prevGameState => {
             if (prevGameState.opponentMoves.length === prevGameState.turnNumber && prevGameState.moves.length === prevGameState.turnNumber) {
@@ -117,6 +126,7 @@ function GunGunShoot(props) {
         
     }
 
+    // Moves
     function shoot(){
         setGameState(prevGameState => {
             if(prevGameState.bullets >= 5){
@@ -167,6 +177,7 @@ function GunGunShoot(props) {
         setWaiting(true)
     }
 
+    // Resetting Game
     function replay(){
         setWaiting(true)
         setReplayHandshake({...replayHandshake, replay: true})
@@ -175,7 +186,7 @@ function GunGunShoot(props) {
 
     function reset(){
         if(replayHandshake.replay && replayHandshake.oppReplay){
-            setReplayHandshake(prevHandshake => {
+            setReplayHandshake(() => {
                 setWaiting(false)
                 setGameState({
                     winner: null,
@@ -191,27 +202,31 @@ function GunGunShoot(props) {
                 }
             })
         }
-    }
+    }    
 
     return (
         <div>
-            <p className="text-center name-banner">Gun Gun Shoot!</p>
+            <p className="text-center name-banner">James Bond!</p>
             <h3 className="score-banner text-center">{gameStats.wins} - {gameStats.oppWins}</h3>
-            <div className="row">
-                <div className={"col-5 offset-1 player-display " + (gameState.winner === "You" ? "winner-display" : "")}>
-                    <PlayerDisplay side="You" 
-                                    bullets={gameState.bullets}
-                                    winner={gameState.winner}
-                                    lastMove={gameState.turnNumber > 1 && gameState.moves[gameState.turnNumber - 2]}/>
-                </div>
-                <div className={"col-5 player-display " + (gameState.winner === "Opponent" ? "winner-display" : "")}>
-                    <PlayerDisplay side="Opponent" 
-                                    bullets={gameState.opponentBullets}
-                                    winner={gameState.winner}
-                                    lastMove={gameState.turnNumber > 1 && gameState.opponentMoves[gameState.turnNumber - 2]}/>
+            <div className="container">
+                <div className="row">
+                    <div className={"col-5 offset-1 player-display " + (gameState.winner === "You" ? "winner-display" : "")}>
+                        <PlayerDisplay side="You" 
+                                        bullets={gameState.bullets}
+                                        winner={gameState.winner}
+                                        lastMove={gameState.turnNumber > 1 && gameState.moves[gameState.turnNumber - 2]}/>
+                    </div>
+                    <div className={"col-5 player-display " + (gameState.winner === "Opponent" ? "winner-display" : "")}>
+                        <PlayerDisplay side="Opponent" 
+                                        bullets={gameState.opponentBullets}
+                                        winner={gameState.winner}
+                                        lastMove={gameState.turnNumber > 1 && gameState.opponentMoves[gameState.turnNumber - 2]}/>
+                    </div>
                 </div>
             </div>
-            {gameState.winner === null && <Choices selection={gameState.moves[gameState.turnNumber - 1]}
+
+            {gameState.winner === null && 
+            <Choices selection={gameState.moves[gameState.turnNumber - 1]}
                     selectionMade= {gameState.moves.length === gameState.turnNumber}
                     reload={reload}
                     block={block}
@@ -219,9 +234,21 @@ function GunGunShoot(props) {
                     bullets={gameState.bullets}
                     waiting={waiting}
                     turnNumber={gameState.turnNumber}/>}
-            { gameState.winner !== null && <GameOverChoices replay={replay}/>}
+
+            { gameState.winner !== null && 
+            <GameOverChoices replay={replay}
+                            openStatsModal={() => setShowStatsModal(true)}
+                            openRulesModal={() => setShowRulesModal(true)}/>}
+
+            <Modal show={showStatsModal} handleClose={() => setShowStatsModal(false)}>
+                <Stats stats={gameStats}/>
+            </Modal>
+
+            <Modal show={showRulesModal} handleClose={() => setShowRulesModal(false)}>
+                <Rules/>
+            </Modal>
         </div>
     )
 }
 
-export default GunGunShoot
+export default JamesBond
