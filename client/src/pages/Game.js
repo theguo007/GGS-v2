@@ -26,7 +26,8 @@ function Game(props) {
 
     function setupSocket(){
         // socket.io connect
-        socket = socketIOClient("https://jamesbondapi.azurewebsites.net/");
+        // socket = socketIOClient("https://jamesbondapi.azurewebsites.net/");
+        socket = socketIOClient("localhost:4001");
             
         // send uuid from url
         socket.emit("GameId", props.match.params.id)
@@ -40,7 +41,7 @@ function Game(props) {
             setGameStage("Begin")
         })
         socket.on("Full", () => {
-            setGameStage("Full")
+            setGameStage("FullGame")
         })
     }
 
