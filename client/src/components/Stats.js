@@ -5,10 +5,7 @@ function Stats({stats}) {
         if(y === 0){
             return "NA"
         }
-        return x/y
-    }
-    if (!stats || (Object.keys(stats).length === 0 && stats.constructor === Object)){
-        return <p className="text-center">No games played yet. No stats for you</p>
+        return (x/y).toFixed(3)
     }
 
     return (

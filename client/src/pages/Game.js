@@ -34,11 +34,12 @@ function Game(props) {
         socket.on("Waiting", () => {
             setGameStage("Waiting")
         })
-        socket.on("Begin", ()=>{
+        socket.on("Begin", () => {
+            // For some reason you must have setCheckingInterval first... 
+            setCheckingInterval(setInterval(() => socket.emit("Is Opponent Still There"), 3000))
             setGameStage("Begin")
-            setCheckingInterval(setInterval(function(){ socket.emit("Is Opponent Still There") }, 30000))
         })
-        socket.on("Full", ()=>{
+        socket.on("Full", () => {
             setGameStage("Full")
         })
     }
@@ -48,9 +49,9 @@ function Game(props) {
         socket.emit("SyncError")
     }
 
-    function disconnected(stats){
+    function disconnected(statistics){
         clearInterval(checkingInterval)
-        setStats(stats)
+        setStats(statistics)
         setGameStage("Disconnected")
     }
 
@@ -62,7 +63,7 @@ function Game(props) {
             {gameStage === "SyncError" && <Error error={Constants.SyncError}/>}
             {!isValidId && <Error error={Constants.InvalidId}/>}
             {gameStage === "Disconnected" && <div>
-                <h4 className="text-center">Sorry your opponent disconnected, but here's some stats to cheer you up!</h4><Stats stats={stats}/>
+                <h4 className="text-center">Sorry, your opponent disconnected, but here's some stats to cheer you up!</h4><Stats stats={stats}/>
             </div> 
             }
         </div>

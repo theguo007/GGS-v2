@@ -49,6 +49,7 @@ io.on("connection", socket => {
     socket.on("Is Opponent Still There", () => {
         var room = io.sockets.adapter.rooms[getGameId()];
         if(!room || room.length != 2){
+            console.log("yo")
             io.to(getGameId()).emit("Opponent Disconnected");
         };
     })
