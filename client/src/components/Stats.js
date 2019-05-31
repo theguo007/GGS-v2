@@ -32,8 +32,8 @@ function Stats({stats}) {
             </div>
             <div className="row">
                 <div className="col-5 col-md-3 offset-md-2"><p>LifeSaving Block Percentage</p></div>
-                <div className="col-3"><p className="text-center">{Ratio(stats.totalBlocks,stats.totalLifeSavingBlocks)}</p></div>
-                <div className="col-3"><p className="text-center">{Ratio(stats.totalOppBlocks,stats.totalOppLifeSavingBlocks)}</p></div>
+                <div className="col-3"><p className="text-center">{Ratio(stats.totalLifeSavingBlocks, stats.totalBlocks)}</p></div>
+                <div className="col-3"><p className="text-center">{Ratio(stats.totalOppLifeSavingBlocks, stats.totalOppBlocks)}</p></div>
             </div>
             <div className="row">
                 <div className="col-5 col-md-3 offset-md-2"><p>Shot Success Rate</p></div>

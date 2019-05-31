@@ -118,7 +118,7 @@ const UseGameStats = () => {
             return gameStats
         })
     }
-    return [gameStats, setGameStats, processStats]
+    return [gameStats, processStats, setGameStats]
 }
 
 export default UseGameStats

@@ -51,8 +51,10 @@
 }
 
 #CreateNewGame-CreateButton {
-  margin: 10% auto;
-  display: block;
+  text-align: center;
+}
+#CreateNewGame-CreateButton button {
+  margin: 10px;
 }
 
 #Choices-WaitingText {
@@ -64,8 +66,8 @@
   bottom: 0;
   width: 100%;
 }
-#Bottom-Choices Button {
-  margin: 20px;
+#Bottom-Choices button {
+  margin: 20px 0px;
 }
 
 #Choices-TurnNumber {

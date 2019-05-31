@@ -1,18 +1,19 @@
 import React, {useEffect, useState} from 'react'
 import PlayerDisplay from "./PlayerDisplay"
 import Choices from "./Choices"
-import Modal from '../shared/Modal';
-import Stats from './Stats';
-import Rules from './Rules';
-import UseGameStats from '../logic/UseGameStats';
-import UseGameState from '../logic/UseGameState';
-import UseReplayLogic from '../logic/UseReplayLogic';
+import Modal from '../shared/Modal'
+import Stats from './Stats'
+import Rules from './Rules'
+import UseGameStats from '../logic/UseGameStats'
+import UseGameState from '../logic/UseGameState'
+import UseReplayLogic from '../logic/UseReplayLogic'
+import MenuBar from '../components/MenuBar'
 
 function JamesBond(props) {
     // States
     
     const [waiting, setWaiting] = useState(false)
-    const [gameStats, setGameStats, processStats] = UseGameStats()
+    const [gameStats, processStats, setGameStats] = UseGameStats()
     const [gameState, setOpponentMove, shoot, block, reload, resetGameState] = UseGameState(setWaiting, props.syncError, props.socket, processStats)
     const [replay, oppReplay] = UseReplayLogic(setWaiting, gameState, props.socket, resetGameState)
     const [showStatsModal, setShowStatsModal] = useState(false)
@@ -74,9 +75,10 @@ function JamesBond(props) {
                     waiting={waiting}
                     turnNumber={gameState.turnNumber}
                     replay={replay}
-                    openStatsModal={() => setShowStatsModal(true)}
-                    openRulesModal={() => setShowRulesModal(true)}
                     winner={gameState.winner}/>
+
+            <MenuBar openStatsModal={() => setShowStatsModal(true)}
+                    openRulesModal={() => setShowRulesModal(true)}/>
 
             <Modal show={showStatsModal} handleClose={() => setShowStatsModal(false)}>
                 <Stats stats={gameStats}/>

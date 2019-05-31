@@ -18,7 +18,7 @@ function UseGameState(setWaiting, syncError, socket, processStats) {
 
     function setOpponentMove(move, turnNumber){
         setGameState(prevGameState => {
-            if(turnNumber !== prevGameState.turnNumber){
+            if(turnNumber && turnNumber !== prevGameState.turnNumber){
                 syncError()
             }
             return {
@@ -78,11 +78,11 @@ function UseGameState(setWaiting, syncError, socket, processStats) {
             var moves = prevGameState.moves.slice()
             if(prevGameState.bullets >= 5){
                 moves[prevGameState.turnNumber - 1] ="Bomb"
-                socket.emit("MakeMove",{move: "Bomb", turnNumber: prevGameState.turnNumber})
+                if(socket) socket.emit("MakeMove",{move: "Bomb", turnNumber: prevGameState.turnNumber})
             }
             else if (prevGameState.bullets > 0){
                 moves[prevGameState.turnNumber - 1] ="Shoot"
-                socket.emit("MakeMove",{move: "Shoot", turnNumber: prevGameState.turnNumber})
+                if(socket) socket.emit("MakeMove",{move: "Shoot", turnNumber: prevGameState.turnNumber})
                 
             }
             return {
@@ -97,7 +97,7 @@ function UseGameState(setWaiting, syncError, socket, processStats) {
         setGameState(prevGameState => {
             var moves = prevGameState.moves.slice()
             moves[prevGameState.turnNumber - 1] ="Block"
-            socket.emit("MakeMove",{move: "Block", turnNumber: prevGameState.turnNumber})
+            if(socket) socket.emit("MakeMove",{move: "Block", turnNumber: prevGameState.turnNumber})
             return {
                 ...prevGameState,
                 moves: moves
@@ -110,7 +110,7 @@ function UseGameState(setWaiting, syncError, socket, processStats) {
         setGameState(prevGameState => {
             var moves = prevGameState.moves.slice()
             moves[prevGameState.turnNumber - 1] ="Reload"
-            socket.emit("MakeMove",{move: "Reload", turnNumber: prevGameState.turnNumber})
+            if(socket) socket.emit("MakeMove",{move: "Reload", turnNumber: prevGameState.turnNumber})
             return {
                 ...prevGameState,
                 moves: moves

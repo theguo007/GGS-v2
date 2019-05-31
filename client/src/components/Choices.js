@@ -25,13 +25,6 @@ function Choices(props) {
             <p id="Choices-WaitingText" className={"text-center " + (!props.waiting ? "display-hidden" : "")}>Waiting for opponent...</p>
             <p id="Choices-TurnNumber" className="text-center">Turn Number: {props.turnNumber}</p>
             {middleChoices()}
-            
-            <div id="Bottom-Choices" className="text-center">
-                <div>
-                    <button className={"btn btn-info float-left"} onClick={props.openRulesModal}>Rules</button>
-                    <button className={"btn btn-info float-right"} onClick={props.openStatsModal}>Stats</button>
-                </div>
-            </div>
         </div>
         
     )

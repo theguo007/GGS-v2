@@ -34,7 +34,7 @@ function PlayerDisplay(props) {
 
     return (
         <div>
-            <p className="player-side">{props.side === "You" ? "You" : "Them"}</p>
+            <p className="player-side">{props.alternateName ? props.alternateName : "Them"}</p>
             <div className="container">
                 <div className="row">
                     <p className="col-6 player-bullets-text">Bullets</p>
