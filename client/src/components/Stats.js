@@ -31,24 +31,24 @@ function Stats({stats}) {
                 <div className="col-3"><p className="text-center">{Ratio(stats.totalOppReloads,stats.totalOppBlocks)}</p></div>
             </div>
             <div className="row">
-                <div className="col-5 col-md-3 offset-md-2"><p>Blocks to Lifesaving Blocks</p></div>
+                <div className="col-5 col-md-3 offset-md-2"><p>LifeSaving Block Percentage</p></div>
                 <div className="col-3"><p className="text-center">{Ratio(stats.totalBlocks,stats.totalLifeSavingBlocks)}</p></div>
                 <div className="col-3"><p className="text-center">{Ratio(stats.totalOppBlocks,stats.totalOppLifeSavingBlocks)}</p></div>
             </div>
             <div className="row">
-                <div className="col-5 col-md-3 offset-md-2"><p>Shot to Kill</p></div>
-                <div className="col-3"><p className="text-center">{Ratio(stats.totalShots,stats.totalKillShots)}</p></div>
-                <div className="col-3"><p className="text-center">{Ratio(stats.totalOppShots,stats.totalOppKillShots)}</p></div>
+                <div className="col-5 col-md-3 offset-md-2"><p>Shot Success Rate</p></div>
+                <div className="col-3"><p className="text-center">{Ratio(stats.totalKillShots, stats.totalShots)}</p></div>
+                <div className="col-3"><p className="text-center">{Ratio(stats.totalOppKillShots, stats.totalOppShots)}</p></div>
             </div>
             <div className="row">
-                <div className="col-5 col-md-3 offset-md-2"><p>Bomb to Kill Ratio</p></div>
-                <div className="col-3"><p className="text-center">{Ratio(stats.totalBombs,stats.totalBombKills)}</p></div>
-                <div className="col-3"><p className="text-center">{Ratio(stats.totalOppBombs,stats.totalOppBombKills)}</p></div>
+                <div className="col-5 col-md-3 offset-md-2"><p>Bomb Success Rate</p></div>
+                <div className="col-3"><p className="text-center">{Ratio(stats.totalBombKills, stats.totalBombs)}</p></div>
+                <div className="col-3"><p className="text-center">{Ratio(stats.totalOppBombKills, stats.totalOppBombs)}</p></div>
             </div>
             <div className="row">
-                <div className="col-5 col-md-3 offset-md-2"><p>Shot Kill to Bomb Kill</p></div>
-                <div className="col-3"><p className="text-center">{Ratio(stats.totalKillShots,stats.totalBombKills)}</p></div>
-                <div className="col-3"><p className="text-center">{Ratio(stats.totalOppKillShots,stats.totalOppBombKills)}</p></div>
+                <div className="col-5 col-md-3 offset-md-2"><p>Bomb Kill to Shot Kill</p></div>
+                <div className="col-3"><p className="text-center">{Ratio(stats.totalBombKills, stats.totalKillShots)}</p></div>
+                <div className="col-3"><p className="text-center">{Ratio(stats.totalOppBombKills, stats.totalOppKillShots)}</p></div>
             </div>
             <div className="row">
                 <div className="offset-md-2 col-md-8">
