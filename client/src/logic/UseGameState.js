@@ -5,8 +5,8 @@ function UseGameState(setWaiting, syncError, socket, processStats) {
         winner: null,
         moves: [],
         opponentMoves: [],
-        bullets: 1,
-        opponentBullets: 1,
+        bullets: 0,
+        opponentBullets: 0,
         turnNumber: 1
     })
 

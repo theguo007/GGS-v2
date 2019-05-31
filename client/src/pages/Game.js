@@ -26,7 +26,7 @@ function Game(props) {
 
     function setupSocket(){
         // socket.io connect
-        socket = socketIOClient("localhost:4001");
+        socket = socketIOClient("https://jamesbondapi.azurewebsites.net/");
             
         // send uuid from url
         socket.emit("GameId", props.match.params.id)
@@ -36,7 +36,7 @@ function Game(props) {
         })
         socket.on("Begin", () => {
             // For some reason you must have setCheckingInterval first... 
-            setCheckingInterval(setInterval(() => socket.emit("Is Opponent Still There"), 3000))
+            setCheckingInterval(setInterval(() => socket.emit("Is Opponent Still There"), 10000))
             setGameStage("Begin")
         })
         socket.on("Full", () => {
@@ -50,6 +50,7 @@ function Game(props) {
     }
 
     function disconnected(statistics){
+        console.log(checkingInterval)
         clearInterval(checkingInterval)
         setStats(statistics)
         setGameStage("Disconnected")

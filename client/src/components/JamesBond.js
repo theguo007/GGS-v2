@@ -12,7 +12,7 @@ function JamesBond(props) {
     // States
     
     const [waiting, setWaiting] = useState(false)
-    const [gameStats, processStats] = UseGameStats()
+    const [gameStats, setGameStats, processStats] = UseGameStats()
     const [gameState, setOpponentMove, shoot, block, reload, resetGameState] = UseGameState(setWaiting, props.syncError, props.socket, processStats)
     const [replay, oppReplay] = UseReplayLogic(setWaiting, gameState, props.socket, resetGameState)
     const [showStatsModal, setShowStatsModal] = useState(false)
@@ -31,8 +31,12 @@ function JamesBond(props) {
         props.socket.on("SyncError", props.syncError)
 
         props.socket.on("Opponent Disconnected", () => {
-            console.log(gameStats)
-            props.disconnected(gameStats)
+            // This is hacky but due to state variable not updating in useEffect because we added empty array
+            setGameStats(prevGameStats => {
+                props.disconnected(prevGameStats)
+                return prevGameStats
+            })
+            
         })
 
         props.socket.on("Replay", () => {
