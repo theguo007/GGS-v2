@@ -26,8 +26,8 @@ function Game(props) {
 
     function setupSocket(){
         // socket.io connect
-        // socket = socketIOClient("https://jamesbondapi.azurewebsites.net/");
-        socket = socketIOClient("localhost:4001");
+        socket = socketIOClient("https://jamesbondapi.azurewebsites.net/");
+        // socket = socketIOClient("localhost:4001");
             
         // send uuid from url
         socket.emit("GameId", props.match.params.id)
@@ -51,7 +51,6 @@ function Game(props) {
     }
 
     function disconnected(statistics){
-        console.log(checkingInterval)
         clearInterval(checkingInterval)
         setStats(statistics)
         setGameStage("Disconnected")
@@ -65,7 +64,8 @@ function Game(props) {
             {gameStage === "SyncError" && <Error error={Constants.SyncError}/>}
             {!isValidId && <Error error={Constants.InvalidId}/>}
             {gameStage === "Disconnected" && <div>
-                <h4 className="text-center">Sorry, your opponent disconnected, but here's some stats to cheer you up!</h4><Stats stats={stats}/>
+                <h4 id="Game-disconnectMessage" className="text-center">Sorry, your opponent disconnected, but here's some stats to cheer you up!</h4>
+                <Stats stats={stats}/>
             </div> 
             }
         </div>
