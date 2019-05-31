@@ -42,7 +42,7 @@ function PlayerDisplay(props) {
                 </div>
             </div>
             {lastMovePicture()}
-            {props.winner === props.side && <p className="last-move-label">Winner!</p>}
+            <p className={"last-move-label " + (props.winner === props.side ? "" : "display-hidden")}>Winner!</p>
         </div>
     )
 }

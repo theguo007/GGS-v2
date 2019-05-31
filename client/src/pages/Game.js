@@ -35,6 +35,7 @@ function Game(props) {
         socket.on("Waiting", () => {
             setGameStage("Waiting")
         })
+
         socket.on("Begin", () => {
             // For some reason you must have setCheckingInterval first... 
             setCheckingInterval(setInterval(() => socket.emit("Is Opponent Still There"), 10000))

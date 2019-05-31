@@ -9,6 +9,13 @@ const server = http.createServer(app);
 const io = socketIo(server);
 const uuidVerification = require("uuid-validate");
 
+// io.origins((origin, callback) => {
+//     if (origin !== 'https://jamesbond.azurewebsites.net') {
+//       return callback('origin not allowed', false);
+//     }
+//     callback(null, true);
+// });
+
 io.on("connection", socket => {
     console.log(`New client connected`);
 
