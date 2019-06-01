@@ -27,7 +27,7 @@ function ComputerGame() {
             choices.push("Bomb")
         } else {
             choices.push("Reload")
-            if (gameState.opponentBullets >= 0){
+            if (gameState.opponentBullets > 0){
                 choices.push("Shoot")
             }
         }
