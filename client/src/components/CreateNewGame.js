@@ -5,8 +5,8 @@ import uuid from 'uuid'
 function CreateNewGame(props) {
     return (
         <div id="CreateNewGame-CreateButton">
-            <button  className="btn btn-success" onClick={() => props.history.push(`/game/${uuid.v4()}`)}>Create Game</button>
-            <button  className="btn btn-success" onClick={() => props.history.push(`/computer`)}>Play Against Computer</button>
+            <button  className="btn btn-success" onClick={() => props.history.push(`/computer`)}>Single Player</button>
+            <button  className="btn btn-success" onClick={() => props.history.push(`/game/${uuid.v4()}`)}>Multiplayer</button>
         </div>
     )
 }

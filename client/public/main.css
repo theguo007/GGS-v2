@@ -8,8 +8,27 @@
 }
 
 .rules-div {
-  padding-left: 30px;
-  padding-right: 30px;
+  padding: 0px 200px;
+}
+@media only screen and (max-width: 400px) {
+  .rules-div {
+    padding: 0px 30px;
+  }
+}
+@media only screen and (min-width: 400px) {
+  .rules-div {
+    padding: 0px 50px;
+  }
+}
+@media only screen and (min-width: 700px) {
+  .rules-div {
+    padding: 0px 125px;
+  }
+}
+@media only screen and (min-width: 1000px) {
+  .rules-div {
+    padding: 0px 200px;
+  }
 }
 
 .player-side {
