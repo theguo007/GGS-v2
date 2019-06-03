@@ -79,18 +79,18 @@ function UseGameState(setWaiting, syncError, socket, processStats) {
             if(prevGameState.bullets >= 5){
                 moves[prevGameState.turnNumber - 1] ="Bomb"
                 if(socket) socket.emit("MakeMove",{move: "Bomb", turnNumber: prevGameState.turnNumber})
+                setWaiting(true)
             }
             else if (prevGameState.bullets > 0){
                 moves[prevGameState.turnNumber - 1] ="Shoot"
                 if(socket) socket.emit("MakeMove",{move: "Shoot", turnNumber: prevGameState.turnNumber})
-                
+                setWaiting(true)
             }
             return {
                 ...prevGameState,
                 moves: moves
             }
-        })
-        setWaiting(true)
+        })        
     }
 
     function block(){

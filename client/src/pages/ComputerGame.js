@@ -80,13 +80,14 @@ function ComputerGame() {
                 <div className="row">
                     <div className={"col-5 offset-1 player-display " + (gameState.winner === "You" ? "winner-display" : "")}>
                         <PlayerDisplay side="You" 
+                                        displayName= "You"
                                         bullets={gameState.bullets}
                                         winner={gameState.winner}
                                         lastMove={gameState.turnNumber > 1 && gameState.moves[gameState.turnNumber - 2]}/>
                     </div>
                     <div className={"col-5 player-display " + (gameState.winner === "Opponent" ? "winner-display" : "")}>
                         <PlayerDisplay side="Opponent" 
-                                        alternateName= "AI"
+                                        displayName= "AI"
                                         bullets={gameState.opponentBullets}
                                         winner={gameState.winner}
                                         lastMove={gameState.turnNumber > 1 && gameState.opponentMoves[gameState.turnNumber - 2]}/>

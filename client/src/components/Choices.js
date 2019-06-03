@@ -10,9 +10,9 @@ function Choices(props) {
             )
         }
         return <div className="text-center">
-                    <button className={"btn " + (props.selection === "Reload" ? "btn-success" : "btn-primary")} onClick={props.reload} disabled={props.selectionMade}>Reload</button>
-                    <button className={"btn " + (props.selection === "Block" ? "btn-success" : "btn-primary")} onClick={props.block} disabled={props.selectionMade}>Block</button>
-                    <button className={"btn " + ((props.selection === "Shoot" || props.selection === "Bomb") ? "btn-success" : "btn-primary")}onClick={props.shoot} 
+                    <button className={"btn mx-2 " + (props.selection === "Reload" ? "btn-success" : "btn-primary")} onClick={props.reload} disabled={props.selectionMade}>Reload</button>
+                    <button className={"btn mx-2 " + (props.selection === "Block" ? "btn-success" : "btn-primary")} onClick={props.block} disabled={props.selectionMade}>Block</button>
+                    <button className={"btn mx-2 " + ((props.selection === "Shoot" || props.selection === "Bomb") ? "btn-success" : "btn-primary")}onClick={props.shoot} 
                             disabled={props.bullets === 0 || props.selectionMade}>
                         {props.bullets < 5 ? "Shoot" : "Bomb"}
                     </button>
