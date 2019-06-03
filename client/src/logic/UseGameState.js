@@ -19,7 +19,7 @@ function UseGameState(setWaiting, syncError, socket, processStats) {
     function setOpponentMove(move, turnNumber){
         setGameState(prevGameState => {
             if(turnNumber && turnNumber !== prevGameState.turnNumber){
-                syncError()
+                if(syncError) syncError()
             }
             return {
                 ...prevGameState,
@@ -65,7 +65,7 @@ function UseGameState(setWaiting, syncError, socket, processStats) {
                     processStats(prevGameState)
                     newGameState.winner = "You"
                 }
-                setWaiting(false)
+                if(setWaiting) setWaiting(false)
                 newGameState.turnNumber++
                 return newGameState;
             }
@@ -79,12 +79,12 @@ function UseGameState(setWaiting, syncError, socket, processStats) {
             if(prevGameState.bullets >= 5){
                 moves[prevGameState.turnNumber - 1] ="Bomb"
                 if(socket) socket.emit("MakeMove",{move: "Bomb", turnNumber: prevGameState.turnNumber})
-                setWaiting(true)
+                if (setWaiting) setWaiting(true)
             }
             else if (prevGameState.bullets > 0){
                 moves[prevGameState.turnNumber - 1] ="Shoot"
                 if(socket) socket.emit("MakeMove",{move: "Shoot", turnNumber: prevGameState.turnNumber})
-                setWaiting(true)
+                if (setWaiting) setWaiting(true)
             }
             return {
                 ...prevGameState,
@@ -103,7 +103,7 @@ function UseGameState(setWaiting, syncError, socket, processStats) {
                 moves: moves
             }
         })
-        setWaiting(true)
+        if (setWaiting) setWaiting(true)
     }
 
     function reload(){
@@ -116,7 +116,7 @@ function UseGameState(setWaiting, syncError, socket, processStats) {
                 moves: moves
             }
         })        
-        setWaiting(true)
+        if (setWaiting) setWaiting(true)
     }
 
     function resetGameState(){

@@ -12,12 +12,11 @@ import 'react-rangeslider/lib/index.css'
 
 function ComputerGame() {
 
-    const [waiting, setWaiting] = useState(false)
     const [gameStats, processStats] = UseGameStats()
-    const [gameState, setOpponentMove, shoot_helper, block_helper, reload_helper, resetGameState] = UseGameState(setWaiting, () => {}, null, processStats)
+    const [gameState, setOpponentMove, shoot_helper, block_helper, reload_helper, resetGameState] = UseGameState(null, null, null, processStats)
     const [showStatsModal, setShowStatsModal] = useState(false)
     const [showRulesModal, setShowRulesModal] = useState(false)
-    const [aggressiveness, setAggressiveness] = useState(67)
+    const [aggressiveness, setAggressiveness] = useState(3)
 
     function computerMove(){
         var choices = []
@@ -35,18 +34,36 @@ function ComputerGame() {
             choices.push("Block")
         }
 
+        var benchmark= .5
         // Choose Move Randomly
-        if(choices.includes("Block")){
-            if(Math.random() <= (aggressiveness / 100)){
+        if(choices.length === 1){
+            move = choices[0]
+        } else if (choices.length === 2){
+            if(gameState.bullets >= 5 || gameState.opponentBullets >=5){
+                move = choices[Math.floor(Math.random()*choices.length)];
+            } else if (gameState.bullets === 0){
+                benchmark = Math.max((((aggressiveness - 3) * 10) + 50), 50)
+                move = Math.random() <= benchmark/100 ? "Reload" : "Shoot"
+            } else if (gameState.opponentBullets === 0){
+                benchmark = Math.max((((3 - aggressiveness) * 10) + 50), 50)
+                move = Math.random() <= benchmark/100 ? "Block" : "Reload"
+            }
+        } else {
+            benchmark = ((aggressiveness - 1) * 12)
+            if(Math.random() >= benchmark/100){
                 var aggressiveOptions = choices.filter(value => value !== "Block");
                 move = aggressiveOptions[Math.floor(Math.random()*aggressiveOptions.length)];
             } else {
                 move = "Block"
             }
-        } else {
-            move = choices[Math.floor(Math.random()*choices.length)];
+        }
+        if(!move) {
+            console.log("AI error...")
+            move = "Block"
         }
         setOpponentMove(move)
+
+        // Blocking 
     }
 
     function shoot(){
@@ -101,7 +118,6 @@ function ComputerGame() {
                     block={block}
                     shoot={shoot}
                     bullets={gameState.bullets}
-                    waiting={waiting}
                     turnNumber={gameState.turnNumber}
                     replay={replay}                    
                     winner={gameState.winner}/>
@@ -112,7 +128,8 @@ function ComputerGame() {
                     <Slider
                         value={aggressiveness}
                         onChange={onAggressivenessChange}
-                        min={10}
+                        min={1}
+                        max={5}
                     />
             </MenuBar>
 
