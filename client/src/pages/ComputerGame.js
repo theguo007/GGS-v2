@@ -49,7 +49,25 @@ function ComputerGame() {
                 move = Math.random() <= benchmark/100 ? "Block" : "Reload"
             }
         } else {
-            benchmark = ((aggressiveness - 1) * 12)
+            switch(aggressiveness){
+                case 5:
+                    benchmark = 0
+                    break
+                case 4: 
+                    benchmark = 15
+                    break
+                case 3:
+                    benchmark = 30
+                    break
+                case 2:
+                    benchmark = 40
+                    break
+                case 1:
+                    benchmark = 50
+                    break
+                default:
+                    benchmark = 33
+            }
             if(Math.random() >= benchmark/100){
                 var aggressiveOptions = choices.filter(value => value !== "Block");
                 move = aggressiveOptions[Math.floor(Math.random()*aggressiveOptions.length)];
